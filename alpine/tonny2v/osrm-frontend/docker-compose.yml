@@ -1,0 +1,42 @@
+version: '3'
+services:
+  tileserver-gl:
+    container_name: docker-tileserver-gl
+    image: klokantech/tileserver-gl
+    volumes:
+      - ./data:/data
+    ports:
+      - 7000:80
+
+  maputnik:
+    container_name: docker-maputnik
+    image: maputnik/editor
+    ports:
+      - 7001:8888
+
+  osrm-backend:
+    container_name: docker-osrm-backend
+    image: osrm/osrm-backend
+    volumes:
+      - ./data:/data
+    ports:
+      - 7002:5000
+    depends_on:
+      - tileserver-gl
+      - maputnik
+    entrypoint:
+      - osrm-routed
+      - --algorithm
+      - mld
+      - /data/china-latest.osrm
+
+  osrm-frontend:
+    image: tonny2v/osrm-frontend
+    build: .
+    container_name: docker-osrm-frontend
+    ports:
+      - 7003:9966
+    volumes:
+      - ./:/src
+    depends_on:
+      - osrm-backend

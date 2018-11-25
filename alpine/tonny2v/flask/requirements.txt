@@ -1,0 +1,5 @@
+flask
+flask_restplus
+pandas
+gunicorn
+mysql-connector
