@@ -1,0 +1,26 @@
+version: '3'
+services:
+  maputnik:
+    container_name: maputnik
+    networks:
+      - mynet
+    image: maputnik/editor
+
+  proxy:
+    container_name: nginx
+    links:
+      - maputnik:maputnik
+    image: nginx:1.15.5-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./logs:/var/log/nginx
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
+    # command: [nginx, '-g', 'daemon off;']
+
+networks:
+  mynet:
+    driver: bridge

@@ -9,10 +9,7 @@ RUN apk update && \
     apk add --no-cache supervisor
 
 COPY requirements.txt /app/
-RUN mkdir -p ${APP_DIR}/web && \
-	mkdir -p ${APP_DIR}/conf && \
-	mkdir -p ${APP_DIR}/logs && \
-	pip3 install -U pip && \
+RUN pip3 install -U pip && \
     pip3 install -r /app/requirements.txt && \
 	echo "files = ${APP_DIR}/conf/*.ini" >> /etc/supervisord.conf
 

@@ -35,7 +35,7 @@ services:
     build: .
     container_name: docker-osrm-frontend
     ports:
-      - 7003:9966
+      - 8001:9966
     volumes:
       - ./:/src
     depends_on:
