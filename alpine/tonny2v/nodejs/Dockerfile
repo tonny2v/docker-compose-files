@@ -1,7 +1,9 @@
-FROM node:11.1.0-alpine
+FROM node:10-alpine
 
 RUN echo "http://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories
 RUN echo "https://mirrors.aliyun.com/alpine/v3.8/community/" >> /etc/apk/repositories
+
+RUN yarn global add osrm
 
 RUN mkdir ~/.pip
 RUN echo $'[global] \n\
