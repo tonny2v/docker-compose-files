@@ -1,7 +1,39 @@
-FROM tonny2v/step1
+FROM python:3.7-alpine3.8
 
 ENV NODE_VERSION 10.15.0
+ENV PYTHON_VERSION 3.7.2
 
+# step 0
+RUN echo "http://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories
+RUN echo "https://mirrors.aliyun.com/alpine/v3.8/community/" >> /etc/apk/repositories
+
+RUN mkdir ~/.pip
+RUN echo $'[global] \n\
+timeout = 6000 \n\
+index-url = http://pypi.douban.com/simple/ \n\
+[install] \n\
+use-mirrors = true \n\
+mirrors = http://pypi.douban.com/simple/ \n\
+trusted-host = pypi.douban.com' > ~/.pip/pip.conf
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache python3-dev libstdc++ net-tools curl htop && \
+    apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing dstat && \
+    apk add --no-cache --virtual .build-deps g++ && \
+    ln -s /usr/include/locale.h /usr/include/xlocale.h && \
+    pip3 install numpy && \
+    pip3 install pandas && \
+    apk del .build-deps
+
+# step 1
+RUN apk add --no-cache g++ && \
+    apk add --no-cache cyrus-sasl-dev libldap libffi-dev libxi-dev python3-dev && \
+    apk add --no-cache supervisor postgresql-dev gcc musl-dev
+
+RUN pip3 install cython
+
+# step 2
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \

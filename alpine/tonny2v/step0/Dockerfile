@@ -14,7 +14,8 @@ trusted-host = pypi.douban.com' > ~/.pip/pip.conf
 
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache python3-dev libstdc++ && \
+    apk add --no-cache python3-dev libstdc++ net-tools curl htop && \
+    apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing dstat && \
     apk add --no-cache --virtual .build-deps g++ && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
     pip3 install numpy && \
