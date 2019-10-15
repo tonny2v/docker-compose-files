@@ -1,11 +1,11 @@
-FROM python:3.7.3-alpine3.9
+FROM python:3.7-alpine3.9
 
 ENV NODE_VERSION 10.15.3
-ENV PYTHON_VERSION 3.7.3
+ENV PYTHON_VERSION 3.7
 
 # step 0
-RUN echo "http://mirrors.aliyun.com/alpine/v3.9/main/" > /etc/apk/repositories
-RUN echo "https://mirrors.aliyun.com/alpine/v3.9/community/" >> /etc/apk/repositories
+#RUN echo "http://mirrors.aliyun.com/alpine/v3.9/main/" > /etc/apk/repositories
+#RUN echo "https://mirrors.aliyun.com/alpine/v3.9/community/" >> /etc/apk/repositories
 
 RUN mkdir ~/.pip
 RUN echo $'[global] \n\
