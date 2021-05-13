@@ -1,7 +1,6 @@
-FROM python:3.7-alpine3.10
+FROM python:3-alpine
 
-RUN echo "http://mirrors.aliyun.com/alpine/v3.10/main/" > /etc/apk/repositories
-RUN echo "https://mirrors.aliyun.com/alpine/v3.10/community/" >> /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 RUN mkdir ~/.pip
 RUN echo $'[global] \n\
@@ -17,6 +16,8 @@ RUN apk update && \
     apk add --no-cache python3-dev libstdc++ net-tools curl htop && \
     apk add --no-cache --virtual .build-deps g++ && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
-    pip3 install numpy && \
-    pip3 install pandas && \
+    apk --update-cache --no-cache add tzdata gcc make freetype-dev gfortran musl-dev g++ libgcc musl gfortran lapack-dev &&\
+    pip install numpy && \
+    pip install pandas && \
+    pip install scipy && \
     apk del .build-deps

@@ -58,7 +58,7 @@ pathlib2
 polyline
 prison
 py
-# pyarrow
+pyarrow
 pycparser
 pyjwt
 pyrsistent

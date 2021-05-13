@@ -12,3 +12,7 @@ RUN pip3 install -r requirements.txt -r requirements-dev.txt -r requirements-ext
 COPY ./pydruid /root/pydruid
 RUN cd /root/pydruid; python3 ./setup.py install \
     && rm -rf /root/pydruid
+
+COPY ./pyarrow-0.15.1 /root/pyarrow
+RUN cd /root/pyarrow; python3 ./setup.py install \
+    && rm -rf /root/pydruid
