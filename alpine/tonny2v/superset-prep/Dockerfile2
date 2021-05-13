@@ -1,0 +1,2 @@
+FROM tonny2v/superset-prep
+RUN pip3 install pyarrow
