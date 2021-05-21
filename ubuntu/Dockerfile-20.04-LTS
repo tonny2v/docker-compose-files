@@ -14,12 +14,12 @@ deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted univers
 deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse \n\
 deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse' > /etc/apt/source.list
 
-RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list
-RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list
-RUN curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add
-
 RUN apt update
 RUN apt install -y curl gnupg2
+
+RUN curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | apt-key add
+RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | tee /etc/apt/sources.list.d/sbt.list
+RUN echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | tee /etc/apt/sources.list.d/sbt_old.list
 
 # yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -33,7 +33,7 @@ RUN mkdir /root/.pip
 RUN echo '[global] \n\
 timeout = 6000 \n\
 index-url = http://pypi.douban.com/simple/ \n\
-[install] \n\ \n\
+[install] \n\
 use-mirrors = true \n\
 mirrors = http://pypi.douban.com/simple/ \n\
 trusted-host = pypi.douban.com'> /root/.pip/pip.conf
@@ -41,8 +41,7 @@ trusted-host = pypi.douban.com'> /root/.pip/pip.conf
 
 # install nodejs
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash
-RUN /bin/bash -c "source /root/.nvm/nvm.sh;nvm install 12"
-RUN npm install --global yarn
+RUN /bin/bash -c "source /root/.nvm/nvm.sh; nvm install 12; npm install --global yarn"
 
 # set vimrc
 RUN echo 'set nu \n\
@@ -57,7 +56,21 @@ set bs=2 \n\
 # install python packages
 RUN apt -y install python3-pip
 
-# install java
+# install jdk scala etc.
 RUN apt install openjdk-8-jdk -y
-
 RUN apt install -y scala maven sbt
+
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+COPY starter /root/starter
+WORKDIR /root/starter
+
+RUN mkdir -p /root/.config/code-server
+
+RUN echo 'bind-addr: 0.0.0.0:8080 \n\
+auth: password \n\
+password: 123456 \n\
+cert: false' >  /root/.config/code-server/config.yaml
+
+CMD code-server
+

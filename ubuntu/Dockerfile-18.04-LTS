@@ -26,7 +26,7 @@ RUN mkdir /root/.pip
 RUN echo '[global] \n\
 timeout = 6000 \n\
 index-url = http://pypi.douban.com/simple/ \n\
-[install] \n\ \n\
+[install] \n\
 use-mirrors = true \n\
 mirrors = http://pypi.douban.com/simple/ \n\
 trusted-host = pypi.douban.com'> /root/.pip/pip.conf
