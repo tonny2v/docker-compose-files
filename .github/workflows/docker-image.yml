@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file ubuntun/Dockerfile-20.04-LTS --tag tonny2v/starter:$(date +%s)
+      run: docker build . --file ubuntu/Dockerfile-20.04-LTS --tag tonny2v/starter:$(date +%s)
