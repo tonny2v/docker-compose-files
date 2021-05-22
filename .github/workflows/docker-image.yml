@@ -15,6 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file ubuntu/Dockerfile-20.04-LTS --tag tonny2v/starter:$(date +%s)
-           echo ${{ env.DOCKER_PASSWORD }} | docker login -u ${{ env.DOCKER_USERNAME }} --password-stdin
-           docker push tonny2v/starter:$(date +%s)
+      run: |
+        docker build . --file ubuntu/Dockerfile-20.04-LTS --tag tonny2v/starter:$(date +%s)
+        echo ${{ env.DOCKER_PASSWORD }} | docker login -u ${{ env.DOCKER_USERNAME }} --password-stdin
+        docker push tonny2v/starter:$(date +%s)
